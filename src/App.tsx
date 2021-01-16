@@ -44,6 +44,7 @@ const App = () => {
           component={Home}
         />
         <ProtectedRoute
+          exact
           path="/students/:id"
           redirectTo="/login"
           component={Student}

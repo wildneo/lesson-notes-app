@@ -1,6 +1,7 @@
 import yup from './yup';
 
-const regExp = /^[0-9]\/[0-9]/;
+const regExpLessonNumber = /^[0-9]\/[0-9]$/;
+const regExpNewWords = /^[a-zA-Z -\s,]+$/;
 
 export default yup.object().shape({
   date: yup.date()
@@ -8,11 +9,12 @@ export default yup.object().shape({
   lessonNumber: yup.string()
     .required()
     .trim()
-    .matches(regExp),
+    .matches(regExpLessonNumber),
   lessonPlan: yup.string()
     .required(),
   homework: yup.string(),
   comment: yup.string(),
   newWords: yup.string()
-    .trim(),
+    .trim()
+    .matches(regExpNewWords),
 });

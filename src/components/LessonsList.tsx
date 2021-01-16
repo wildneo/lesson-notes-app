@@ -96,8 +96,8 @@ const LessonsList = () => {
         </Toolbar>
         <Divider />
         <List>
-          {lessons.map((lesson, index) => (
-            <ListItem key={lesson.id} divider={index < lessons.length - 1}>
+          {lessons.map((lesson) => (
+            <ListItem key={lesson.id} divider>
               <div className={classes.wrapper}>
                 <div className={classes.header}>
                   <ListItemIcon>
@@ -122,7 +122,7 @@ const LessonsList = () => {
                   </ListItemIcon>
                 </div>
                 <Collapse
-                  collapsedHeight={60}
+                  collapsedHeight={64}
                   in={lesson.id === expanded}
                   timeout="auto"
                 >
@@ -157,7 +157,7 @@ const LessonsList = () => {
                         <Typography variant="subtitle1" gutterBottom>
                           New words
                         </Typography>
-                        {lesson.newWords.split(',').map((word) => (
+                        {lesson.newWords.map((word) => (
                           <Chip
                             key={word}
                             className={classes.wordChip}

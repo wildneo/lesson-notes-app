@@ -26,7 +26,7 @@ export interface Lesson {
   lessonPlan: string;
   homework: string;
   comment: string;
-  newWords: string;
+  newWords: string[];
   createdAt: Date;
 }
 
@@ -36,11 +36,14 @@ export interface LessonDoc {
   lessonPlan: string;
   homework: string;
   comment: string;
-  newWords: string;
+  newWords: string[];
   createdAt: firebase.firestore.Timestamp;
 }
 
-export type LessonFormValues = Omit<Lesson, 'id' | 'createdAt' | 'teacherUID'>;
+export interface LessonFormValues
+  extends Omit<Lesson, 'id' | 'createdAt' | 'teacherUID' | 'newWords'> {
+  newWords: string;
+}
 
 // eslint-disable-next-line no-unused-vars
 type onChangeCallback<T> = (data: T) => void;
@@ -75,13 +78,19 @@ const useDatabase = () => {
     try {
       if (auth.currentUser) {
         const timestamp = new Date();
+        const trimmedWords = lesson.newWords
+          .split(',')
+          .reduce<string[]>((acc, word) => {
+            const trimed = word.trim();
+            return trimed ? [...acc, trimed] : acc;
+          }, []);
         const newLesson: Omit<Lesson, 'id'> = {
           date: lesson.date,
           lessonNumber: lesson.lessonNumber,
           lessonPlan: lesson.lessonPlan,
           homework: lesson.homework,
           comment: lesson.comment,
-          newWords: lesson.newWords,
+          newWords: trimmedWords,
           createdAt: timestamp,
         };
 
