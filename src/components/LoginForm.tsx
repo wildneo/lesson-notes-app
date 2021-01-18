@@ -63,7 +63,7 @@ const LoginForm = () => {
   } = methods;
 
   const isLoading = requestStatus === 'requested';
-  const isSubmitted = formState.isSubmitSuccessful;
+  const { isSubmitSuccessful, isDirty } = formState;
 
   const handleLogIn = async ({ email, password }: UserFormValues) => {
     setRequestStatus('requested');
@@ -96,8 +96,8 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    if (isSubmitted) reset();
-  }, [isSubmitted, reset]);
+    if (isSubmitSuccessful) reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <Container disableGutters maxWidth="xs">
@@ -124,7 +124,7 @@ const LoginForm = () => {
                 variant="outlined"
                 error={Boolean(errors.email)}
                 helperText={errors.email?.message ?? ' '}
-                disabled={isSubmitted}
+                disabled={isSubmitSuccessful}
                 type="email"
                 required
               />
@@ -136,7 +136,7 @@ const LoginForm = () => {
                 variant="outlined"
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message ?? ' '}
-                disabled={isSubmitted}
+                disabled={isSubmitSuccessful}
                 type="password"
                 required
               />
@@ -144,8 +144,7 @@ const LoginForm = () => {
             <Grid item xs={12}>
               <Button
                 onClick={handleSubmit(handleLogIn)}
-                variant="contained"
-                disabled={isSubmitted}
+                disabled={isSubmitSuccessful || !isDirty}
                 color="primary"
                 fullWidth
               >

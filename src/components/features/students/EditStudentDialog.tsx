@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import useTheme from '@material-ui/core/styles/useTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 
-import useDatabase, { LessonFormValues, Student } from '../../../hooks/useDatabase';
-import schema from '../../../schemas/newLesson';
+import useDatabase, { Student } from '../../../hooks/useDatabase';
+import schema from '../../../schemas/newStudent';
 import { RequestStatus } from '../../../typings';
-import Fab from '../../Fab';
-import LessonForm from '../../LessonForm';
+import { pickUpdatedFields } from '../../../utils';
+import StudentForm, { StudentFormProps } from '../../StudentForm';
 
-const NewStudentDialog = () => {
+export interface UpdateStudentDialogProps {
+  student: Student;
+}
+
+const UpdateStudentDialog = ({ student }: UpdateStudentDialogProps) => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const { addLesson } = useDatabase();
-  const { state: { student } } = useLocation<{ student: Student }>();
-
+  const { updateStudent } = useDatabase();
   const defaultValues = {
-    date: new Date(),
-    lessonNumber: '',
-    lessonPlan: '',
-    homework: '',
-    comment: '',
-    newWords: '',
+    firstName: student.firstName,
+    lastName: student.lastName,
   };
 
   const isLoading = requestStatus === 'requested';
@@ -41,25 +38,29 @@ const NewStudentDialog = () => {
     setOpen(false);
   };
 
-  const handleAddStudent = async (values: LessonFormValues) => {
+  const handleUpdateStudent: StudentFormProps['onSubmit'] = async (
+    values,
+    dirtyFields,
+  ) => {
     setRequestStatus('requested');
     try {
-      await addLesson(student.id, values);
+      // console.log(values, dirtyFields);
+      const updatedFields = pickUpdatedFields(values, dirtyFields);
+      await updateStudent(student.id, updatedFields);
       setRequestStatus('finished');
+      setOpen(false);
     } catch (error) {
       setRequestStatus('failed');
+      // eslint-disable-next-line no-console
+      console.log(error);
     }
-    setOpen(false);
   };
 
   return (
     <>
-      <Fab
-        onClick={handleOpen}
-        color="primary"
-      >
-        <AddIcon />
-      </Fab>
+      <IconButton onClick={handleOpen}>
+        <EditIcon />
+      </IconButton>
       <Dialog
         onClose={handleClose}
         fullScreen={fullScreen}
@@ -68,12 +69,12 @@ const NewStudentDialog = () => {
         maxWidth="xs"
         open={open}
       >
-        <DialogTitle>Add new lesson</DialogTitle>
-        <LessonForm
+        <DialogTitle>Edit student</DialogTitle>
+        <StudentForm
           defaultValues={defaultValues}
           isLoading={isLoading}
           schema={schema}
-          onSubmit={handleAddStudent}
+          onSubmit={handleUpdateStudent}
           onCancel={handleClose}
         />
       </Dialog>
@@ -81,4 +82,4 @@ const NewStudentDialog = () => {
   );
 };
 
-export default React.memo(NewStudentDialog);
+export default React.memo(UpdateStudentDialog);

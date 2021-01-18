@@ -75,6 +75,24 @@ const useDatabase = () => {
     }
   };
 
+  const updateStudent = async (id: string, fields: Partial<StudentFormValues>) => {
+    try {
+      if (auth.currentUser) {
+        await db
+          .collection('teachers')
+          .doc(auth.currentUser?.uid)
+          .collection('students')
+          .doc(id)
+          .update(fields);
+      } else {
+        throw new Error('Auth error');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error adding document: ', error);
+    }
+  };
+
   const addLesson = async (studentId: string, lesson: LessonFormValues) => {
     try {
       if (auth.currentUser) {
@@ -106,6 +124,26 @@ const useDatabase = () => {
     }
   };
 
+  const subscribeOnStudent = (
+    id: string,
+    cb: onChangeCallback<Student>,
+  ): firebase.Unsubscribe => db
+    .collection('teachers')
+    .doc(auth.currentUser?.uid)
+    .collection('students')
+    .doc(id)
+    .onSnapshot((doc) => {
+      const data = doc.data() as StudentDoc;
+      const student: Student = {
+        id: doc.id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        isActive: data.isActive,
+        createdAt: data.createdAt.toDate(),
+      };
+      cb(student);
+    });
+
   const subscribeOnStudents = (
     cb: onChangeCallback<Student[]>,
   ): firebase.Unsubscribe => db
@@ -127,7 +165,6 @@ const useDatabase = () => {
 
         return student;
       });
-
       cb(students);
     });
 
@@ -165,6 +202,8 @@ const useDatabase = () => {
     db,
     addLesson,
     addStudent,
+    updateStudent,
+    subscribeOnStudent,
     subscribeOnLessons,
     subscribeOnStudents,
   };

@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, FormState } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -18,8 +17,12 @@ export interface StudentFormProps {
   schema: AnyObjectSchema;
   isLoading: boolean;
   defaultValues: StudentFormValues;
-  // eslint-disable-next-line no-unused-vars
-  onSubmit: (values: StudentFormValues) => void;
+  onSubmit: (
+    // eslint-disable-next-line no-unused-vars
+    values: StudentFormValues,
+    // eslint-disable-next-line no-unused-vars
+    dirtyFields: FormState<StudentFormValues>['dirtyFields'],
+  ) => void;
   onCancel: () => void;
 }
 
@@ -40,15 +43,18 @@ const StudentForm = (props: StudentFormProps) => {
     formState, errors, handleSubmit, reset,
   } = methods;
 
-  const isSubmitted = formState.isSubmitSuccessful;
+  const { dirtyFields, isSubmitSuccessful, isDirty } = formState;
+
+  const adapter = (values: StudentFormValues) => {
+    onSubmit(values, dirtyFields);
+  };
 
   useEffect(() => {
-    if (isSubmitted) reset();
-  }, [isSubmitted, reset]);
+    if (isSubmitSuccessful) reset();
+  }, [isSubmitSuccessful, reset]);
 
   return (
     <FormProvider {...methods}>
-      <DialogTitle>Add new student</DialogTitle>
       {isLoading && <LinearProgress />}
       <DialogContent dividers>
         <Grid
@@ -65,7 +71,7 @@ const StudentForm = (props: StudentFormProps) => {
               variant="outlined"
               error={Boolean(errors.firstName)}
               helperText={errors.firstName?.message ?? ' '}
-              disabled={isSubmitted}
+              disabled={isSubmitSuccessful}
               required
             />
           </Grid>
@@ -76,7 +82,7 @@ const StudentForm = (props: StudentFormProps) => {
               variant="outlined"
               error={Boolean(errors.lastName)}
               helperText={errors.lastName?.message ?? ' '}
-              disabled={isSubmitted}
+              disabled={isSubmitSuccessful}
             />
           </Grid>
         </Grid>
@@ -84,19 +90,20 @@ const StudentForm = (props: StudentFormProps) => {
       <DialogActions>
         <Button
           onClick={onCancel}
-          disabled={isSubmitted}
+          disabled={isSubmitSuccessful}
           color="secondary"
         >
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit(onSubmit)}
-          disabled={isSubmitted}
+          onClick={handleSubmit(adapter)}
+          disabled={isSubmitSuccessful || !isDirty}
           color="primary"
         >
           Save
         </Button>
       </DialogActions>
+      {/* {JSON.stringify(formState.dirtyFields, null, 2)} */}
     </FormProvider>
   );
 };

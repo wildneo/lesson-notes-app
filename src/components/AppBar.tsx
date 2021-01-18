@@ -2,18 +2,14 @@ import React from 'react';
 
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
-import {
-  Toolbar,
-  IconButton,
-  Typography,
-  Menu,
-  MenuItem,
-  createStyles,
-  Theme,
-} from '@material-ui/core';
 import MUIAppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Slide from '@material-ui/core/Slide';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { AccountCircle } from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -83,7 +79,7 @@ const AppBar = () => {
     });
 
     return () => unsubscribe();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

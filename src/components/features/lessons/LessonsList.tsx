@@ -14,7 +14,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
@@ -22,6 +21,7 @@ import clsx from 'clsx';
 import useDatabase, { Lesson, Student } from '../../../hooks/useDatabase';
 import Container from '../../Container';
 import Paper from '../../Paper';
+import UpdateStudentDialog from '../students/EditStudentDialog';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   wrapper: {
@@ -56,13 +56,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 }));
 
 const LessonsList = () => {
+  const { state } = useLocation<{ student: Student }>();
   const [expanded, setExpanded] = React.useState<Lesson['id'] | null>(null);
+  const [student, setStudent] = React.useState<Student>(state.student);
   const [lessons, setLessons] = React.useState<Lesson[]>([]);
   const classes = useStyles();
-  const {
-    state: { student },
-  } = useLocation<{ student: Student }>();
-  const { subscribeOnLessons } = useDatabase();
+  const { subscribeOnStudent, subscribeOnLessons } = useDatabase();
   const { id } = useParams<{ id: Student['id'] }>();
 
   const fullName = `${student.firstName} ${student.lastName}`;
@@ -77,11 +76,17 @@ const LessonsList = () => {
   };
 
   React.useEffect(() => {
-    const unsubscribe = subscribeOnLessons(id, (lsns) => {
-      setLessons(lsns);
+    const unsubStudent = subscribeOnStudent(id, (s) => {
+      setStudent(s);
+    });
+    const unsubLessons = subscribeOnLessons(id, (l) => {
+      setLessons(l);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubStudent();
+      unsubLessons();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,9 +95,7 @@ const LessonsList = () => {
       <Paper>
         <Toolbar>
           <Typography variant="h5">{fullName}</Typography>
-          <IconButton>
-            <EditIcon />
-          </IconButton>
+          <UpdateStudentDialog student={student} />
         </Toolbar>
         <Divider />
         <List>
