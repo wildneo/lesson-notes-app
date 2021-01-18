@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 
 import { auth, db } from '../firebase';
+import { wordsToArray } from '../utils';
 
 export interface Student {
   id: string;
@@ -51,23 +52,23 @@ type onChangeCallback<T> = (data: T) => void;
 const useDatabase = () => {
   const addStudent = async (student: StudentFormValues) => {
     try {
-      if (!auth.currentUser) {
+      if (auth.currentUser) {
+        const createdAt = new Date();
+        const newStudent: Omit<Student, 'id'> = {
+          firstName: student.firstName,
+          lastName: student.lastName,
+          isActive: true,
+          createdAt,
+        };
+
+        await db
+          .collection('teachers')
+          .doc(auth.currentUser?.uid)
+          .collection('students')
+          .add(newStudent);
+      } else {
         throw new Error('Auth error');
       }
-
-      const timestamp = new Date();
-      const newStudent: Omit<Student, 'id'> = {
-        firstName: student.firstName,
-        lastName: student.lastName,
-        isActive: true,
-        createdAt: timestamp,
-      };
-
-      await db
-        .collection('teachers')
-        .doc(auth.currentUser?.uid)
-        .collection('students')
-        .add(newStudent);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error adding document: ', error);
@@ -77,26 +78,21 @@ const useDatabase = () => {
   const addLesson = async (studentId: string, lesson: LessonFormValues) => {
     try {
       if (auth.currentUser) {
-        const timestamp = new Date();
-        const trimmedWords = lesson.newWords
-          .split(',')
-          .reduce<string[]>((acc, word) => {
-            const trimed = word.trim();
-            return trimed ? [...acc, trimed] : acc;
-          }, []);
+        const createdAt = new Date();
+        const newWords = wordsToArray(lesson.newWords);
         const newLesson: Omit<Lesson, 'id'> = {
           date: lesson.date,
           lessonNumber: lesson.lessonNumber,
           lessonPlan: lesson.lessonPlan,
           homework: lesson.homework,
           comment: lesson.comment,
-          newWords: trimmedWords,
-          createdAt: timestamp,
+          createdAt,
+          newWords,
         };
 
         await db
           .collection('teachers')
-          .doc(auth.currentUser?.uid)
+          .doc(auth.currentUser.uid)
           .collection('students')
           .doc(studentId)
           .collection('lessons')

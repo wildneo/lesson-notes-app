@@ -1,12 +1,12 @@
 import React from 'react';
 
-import LessonsList from '../components/LessonsList';
-import NewLessonDialog from '../components/NewLessonDialog';
+import AddLessonDialog from '../components/features/lessons/AddLessonDialog';
+import LessonsList from '../components/features/lessons/LessonsList';
 
 const Student = () => (
   <>
     <LessonsList />
-    <NewLessonDialog />
+    <AddLessonDialog />
   </>
 );
 

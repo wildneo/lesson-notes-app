@@ -12,7 +12,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
@@ -20,19 +19,21 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
 
-import useDatabase, { Lesson, Student } from '../hooks/useDatabase';
-import Container from './Container';
+import useDatabase, { Lesson, Student } from '../../../hooks/useDatabase';
+import Container from '../../Container';
+import Paper from '../../Paper';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   wrapper: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
+    whiteSpace: 'pre-wrap',
   },
   header: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'spa',
+    justifyContent: 'space-between',
   },
   lessonAvatar: {
     color: theme.palette.secondary.contrastText,
@@ -65,7 +66,6 @@ const LessonsList = () => {
   const { id } = useParams<{ id: Student['id'] }>();
 
   const fullName = `${student.firstName} ${student.lastName}`;
-  const inheritHeight = { height: 'inherit' };
 
   const handleClickExpand = (lessionID: Lesson['id']) => () => {
     if (lessionID === expanded) {
@@ -86,8 +86,8 @@ const LessonsList = () => {
   }, []);
 
   return (
-    <Container style={inheritHeight} disableGutters maxWidth="sm">
-      <Paper style={inheritHeight} variant="outlined" square>
+    <Container>
+      <Paper>
         <Toolbar>
           <Typography variant="h5">{fullName}</Typography>
           <IconButton>

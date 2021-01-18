@@ -16,5 +16,5 @@ export default yup.object().shape({
   comment: yup.string(),
   newWords: yup.string()
     .trim()
-    .matches(regExpNewWords),
+    .matches(regExpNewWords, { excludeEmptyString: true }),
 });
