@@ -1,12 +1,12 @@
 import React from 'react';
 
-import NewStudentDialog from '../components/NewStudentDialog';
-import StudentsList from '../components/StudentsList';
+import AddStudentDialog from '../components/features/students/AddStudentDialog';
+import StudentsList from '../components/features/students/StudentsList';
 
 const Home = () => (
   <>
     <StudentsList />
-    <NewStudentDialog />
+    <AddStudentDialog />
   </>
 );
 

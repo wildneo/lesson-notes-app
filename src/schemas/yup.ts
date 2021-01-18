@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+export type { AnyObjectSchema } from 'yup';
+
 yup.setLocale({
   mixed: {
     notType: () => 'Wrong Format',

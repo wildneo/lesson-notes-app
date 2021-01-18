@@ -3,17 +3,17 @@ import React from 'react';
 import { generatePath, useHistory } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
-import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import useDatabase, { Student } from '../hooks/useDatabase';
+import useDatabase, { Student } from '../../../hooks/useDatabase';
+import Container from '../../Container';
+import Paper from '../../Paper';
 
 const getFullName = (student: Student) => (
   `${student.firstName} ${student.lastName}`
@@ -22,8 +22,6 @@ const getFullName = (student: Student) => (
 const getInitials = (student: Student) => (
   `${student.firstName[0]}${student.lastName[0]}`
 );
-
-const inheritHeight = { height: 'inherit' };
 
 const StudentsList = () => {
   const [students, setStudents] = React.useState<Student[]>([]);
@@ -43,8 +41,8 @@ const StudentsList = () => {
   }, []);
 
   return (
-    <Container style={inheritHeight} disableGutters maxWidth="sm">
-      <Paper style={inheritHeight} variant="outlined" square>
+    <Container>
+      <Paper>
         <Toolbar>
           <Typography variant="h5">
             Students list
@@ -52,19 +50,18 @@ const StudentsList = () => {
         </Toolbar>
         <Divider />
         <List>
-          {students.map((student, index) => (
+          {students.map((student) => (
             <ListItem
               key={student.id}
-              divider={index < students.length - 1}
-              button
               onClick={handleItemClick(student)}
+              divider
+              button
             >
               <ListItemAvatar>
                 <Avatar>{getInitials(student)}</Avatar>
               </ListItemAvatar>
               <ListItemText
                 primary={getFullName(student)}
-                // secondary={secondary}
               />
             </ListItem>
           ))}
