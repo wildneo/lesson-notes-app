@@ -54,13 +54,7 @@ const LoginForm = () => {
     },
   });
 
-  const {
-    formState,
-    errors,
-    handleSubmit,
-    setError,
-    reset,
-  } = methods;
+  const { formState, errors, handleSubmit, setError, reset } = methods;
 
   const isLoading = requestStatus === 'requested';
   const { isSubmitSuccessful, isDirty } = formState;

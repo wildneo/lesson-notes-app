@@ -3,7 +3,10 @@ import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import FormControl from '@material-ui/core/FormControl';
-import { DatePicker, DatePickerProps as MUIDatePickerProps } from '@material-ui/pickers';
+import {
+  DatePicker,
+  DatePickerProps as MUIDatePickerProps,
+} from '@material-ui/pickers';
 
 import { InputComponent, BaseTextFieldProps } from './TextField';
 

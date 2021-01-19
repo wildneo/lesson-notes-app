@@ -15,13 +15,11 @@ import useDatabase, { Student } from '../../../hooks/useDatabase';
 import Container from '../../Container';
 import Paper from '../../Paper';
 
-const getFullName = (student: Student) => (
-  `${student.firstName} ${student.lastName}`
-);
+const getFullName = (student: Student) =>
+  `${student.firstName} ${student.lastName}`;
 
-const getInitials = (student: Student) => (
-  `${student.firstName[0]}${student.lastName[0]}`
-);
+const getInitials = (student: Student) =>
+  `${student.firstName[0]}${student.lastName[0]}`;
 
 const StudentsList = () => {
   const [students, setStudents] = React.useState<Student[]>([]);
@@ -37,16 +35,14 @@ const StudentsList = () => {
     const unsubscribe = subscribeOnStudents(setStudents);
 
     return () => unsubscribe();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container>
       <Paper>
         <Toolbar>
-          <Typography variant="h5">
-            Students list
-          </Typography>
+          <Typography variant="h5">Students list</Typography>
         </Toolbar>
         <Divider />
         <List>
@@ -60,9 +56,7 @@ const StudentsList = () => {
               <ListItemAvatar>
                 <Avatar>{getInitials(student)}</Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary={getFullName(student)}
-              />
+              <ListItemText primary={getFullName(student)} />
             </ListItem>
           ))}
         </List>

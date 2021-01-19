@@ -8,7 +8,10 @@ import useTheme from '@material-ui/core/styles/useTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddIcon from '@material-ui/icons/Add';
 
-import useDatabase, { LessonFormValues, Student } from '../../../hooks/useDatabase';
+import useDatabase, {
+  LessonFormValues,
+  Student,
+} from '../../../hooks/useDatabase';
 import schema from '../../../schemas/newLesson';
 import { RequestStatus } from '../../../typings';
 import Fab from '../../Fab';
@@ -20,7 +23,9 @@ const NewStudentDialog = () => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { addLesson } = useDatabase();
-  const { state: { student } } = useLocation<{ student: Student }>();
+  const {
+    state: { student },
+  } = useLocation<{ student: Student }>();
 
   const defaultValues = {
     date: new Date(),
@@ -54,10 +59,7 @@ const NewStudentDialog = () => {
 
   return (
     <>
-      <Fab
-        onClick={handleOpen}
-        color="primary"
-      >
+      <Fab onClick={handleOpen} color="primary">
         <AddIcon />
       </Fab>
       <Dialog

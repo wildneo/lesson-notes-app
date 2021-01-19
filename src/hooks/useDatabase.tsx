@@ -46,7 +46,6 @@ export interface LessonFormValues
   newWords: string;
 }
 
-// eslint-disable-next-line no-unused-vars
 type onChangeCallback<T> = (data: T) => void;
 
 const useDatabase = () => {
@@ -75,7 +74,10 @@ const useDatabase = () => {
     }
   };
 
-  const updateStudent = async (id: string, fields: Partial<StudentFormValues>) => {
+  const updateStudent = async (
+    id: string,
+    fields: Partial<StudentFormValues>,
+  ) => {
     try {
       if (auth.currentUser) {
         await db
@@ -127,33 +129,13 @@ const useDatabase = () => {
   const subscribeOnStudent = (
     id: string,
     cb: onChangeCallback<Student>,
-  ): firebase.Unsubscribe => db
-    .collection('teachers')
-    .doc(auth.currentUser?.uid)
-    .collection('students')
-    .doc(id)
-    .onSnapshot((doc) => {
-      const data = doc.data() as StudentDoc;
-      const student: Student = {
-        id: doc.id,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        isActive: data.isActive,
-        createdAt: data.createdAt.toDate(),
-      };
-      cb(student);
-    });
-
-  const subscribeOnStudents = (
-    cb: onChangeCallback<Student[]>,
-  ): firebase.Unsubscribe => db
-    .collection('teachers')
-    .doc(auth.currentUser?.uid)
-    .collection('students')
-    .where('isActive', '==', true)
-    .orderBy('createdAt', 'desc')
-    .onSnapshot((snapshot) => {
-      const students = snapshot.docs.map((doc) => {
+  ): firebase.Unsubscribe =>
+    db
+      .collection('teachers')
+      .doc(auth.currentUser?.uid)
+      .collection('students')
+      .doc(id)
+      .onSnapshot((doc) => {
         const data = doc.data() as StudentDoc;
         const student: Student = {
           id: doc.id,
@@ -162,41 +144,64 @@ const useDatabase = () => {
           isActive: data.isActive,
           createdAt: data.createdAt.toDate(),
         };
-
-        return student;
+        cb(student);
       });
-      cb(students);
-    });
+
+  const subscribeOnStudents = (
+    cb: onChangeCallback<Student[]>,
+  ): firebase.Unsubscribe =>
+    db
+      .collection('teachers')
+      .doc(auth.currentUser?.uid)
+      .collection('students')
+      .where('isActive', '==', true)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((snapshot) => {
+        const students = snapshot.docs.map((doc) => {
+          const data = doc.data() as StudentDoc;
+          const student: Student = {
+            id: doc.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            isActive: data.isActive,
+            createdAt: data.createdAt.toDate(),
+          };
+
+          return student;
+        });
+        cb(students);
+      });
 
   const subscribeOnLessons = (
     studentId: string,
     cb: onChangeCallback<Lesson[]>,
-  ): firebase.Unsubscribe => db
-    .collection('teachers')
-    .doc(auth.currentUser?.uid)
-    .collection('students')
-    .doc(studentId)
-    .collection('lessons')
-    .orderBy('date', 'desc')
-    .onSnapshot((snapshot) => {
-      const lessons = snapshot.docs.map((doc) => {
-        const data = doc.data() as LessonDoc;
-        const lesson: Lesson = {
-          id: doc.id,
-          date: data.date.toDate(),
-          lessonNumber: data.lessonNumber,
-          lessonPlan: data.lessonPlan,
-          homework: data.homework,
-          comment: data.comment,
-          newWords: data.newWords,
-          createdAt: data.createdAt.toDate(),
-        };
+  ): firebase.Unsubscribe =>
+    db
+      .collection('teachers')
+      .doc(auth.currentUser?.uid)
+      .collection('students')
+      .doc(studentId)
+      .collection('lessons')
+      .orderBy('date', 'desc')
+      .onSnapshot((snapshot) => {
+        const lessons = snapshot.docs.map((doc) => {
+          const data = doc.data() as LessonDoc;
+          const lesson: Lesson = {
+            id: doc.id,
+            date: data.date.toDate(),
+            lessonNumber: data.lessonNumber,
+            lessonPlan: data.lessonPlan,
+            homework: data.homework,
+            comment: data.comment,
+            newWords: data.newWords,
+            createdAt: data.createdAt.toDate(),
+          };
 
-        return lesson;
+          return lesson;
+        });
+
+        cb(lessons);
       });
-
-      cb(lessons);
-    });
 
   return {
     db,

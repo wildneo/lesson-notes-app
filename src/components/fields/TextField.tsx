@@ -4,7 +4,9 @@ import { useFormContext, Controller } from 'react-hook-form';
 
 import FormControl from '@material-ui/core/FormControl';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import MUITextField, { TextFieldProps as MUITextFieldProps } from '@material-ui/core/TextField';
+import MUITextField, {
+  TextFieldProps as MUITextFieldProps,
+} from '@material-ui/core/TextField';
 
 export interface BaseTextFieldProps {
   name: string;
@@ -50,9 +52,10 @@ export const InputComponent = (props: MUITextFieldProps) => {
   );
 };
 
-export const InputComponentFR = React.forwardRef<any, MUITextFieldProps>(
-  (props, ref) => <MUITextField inputRef={ref} {...props} />,
-);
+export const InputComponentFR = React.forwardRef<
+  HTMLElement,
+  MUITextFieldProps
+>((props, ref) => <MUITextField inputRef={ref} {...props} />);
 
 const TextField = (props: TextFieldProps) => {
   const {
@@ -66,9 +69,7 @@ const TextField = (props: TextFieldProps) => {
   return (
     <FormControl fullWidth>
       <Controller
-        render={(inputProps) => (
-          <Input {...otherProps} {...inputProps} />
-        )}
+        render={(inputProps) => <Input {...otherProps} {...inputProps} />}
         name={name}
         control={control}
       />

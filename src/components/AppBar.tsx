@@ -16,14 +16,16 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import useAuth from '../hooks/useAuth';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  goBackButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    goBackButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      flexGrow: 1,
+    },
+  }),
+);
 
 interface HideOnScrollProps {
   children?: React.ReactElement;

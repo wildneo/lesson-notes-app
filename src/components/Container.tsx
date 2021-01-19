@@ -4,7 +4,7 @@ import MUIContainer, { ContainerProps } from '@material-ui/core/Container';
 import { styled } from '@material-ui/core/styles';
 
 const Container = styled(
-  React.forwardRef<any, ContainerProps>((props, ref) => (
+  React.forwardRef<HTMLDivElement, ContainerProps>((props, ref) => (
     <MUIContainer disableGutters maxWidth="sm" ref={ref} {...props} />
   )),
 )({

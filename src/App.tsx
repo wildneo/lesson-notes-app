@@ -25,24 +25,15 @@ const App = () => {
     });
 
     return () => unsubscribe();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return ready ? (
-    <Box
-      display="flex"
-      flexDirection="column"
-      height="inherit"
-    >
+    <Box display="flex" flexDirection="column" height="inherit">
       <AppBar />
       <Toolbar />
       <Switch>
-        <ProtectedRoute
-          exact
-          path="/"
-          redirectTo="/login"
-          component={Home}
-        />
+        <ProtectedRoute exact path="/" redirectTo="/login" component={Home} />
         <ProtectedRoute
           exact
           path="/students/:id"

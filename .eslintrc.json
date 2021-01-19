@@ -1,24 +1,5 @@
 {
-  "plugins": ["@typescript-eslint"],
-  "extends": ["react-app", "airbnb"],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "settings": {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
-    },
-    "import/resolver": {
-      "typescript": {
-        "directory": "./tsconfig.json"
-      },
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  },
+  "extends": ["airbnb-typescript-prettier"],
   "rules": {
     "import/order": ["error", {
       "groups": [
@@ -52,23 +33,10 @@
         "unusedExports": true
       }
     ],
-    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
-    "@typescript-eslint/no-unused-vars": "off",
-    "import/prefer-default-export": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/jsx-props-no-spreading": "off",
+    "@typescript-eslint/ban-types": "off",
     "react/require-default-props": "off",
-    "react/no-unused-prop-types": "off",
-    "react/jsx-boolean-value": "off",
-    "no-multiple-empty-lines": "off",
-    "no-use-before-define": "off",
-    "import/extensions": "off",
-    "react/prop-types": "off",
     "linebreak-style": "off"
-  },
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true,
-    "jest": true
   }
 }

@@ -40,9 +40,7 @@ const StudentForm = (props: LessonFormProps) => {
     defaultValues,
   });
 
-  const {
-    formState, errors, handleSubmit, reset,
-  } = methods;
+  const { formState, errors, handleSubmit, reset } = methods;
 
   const { dirtyFields, isSubmitSuccessful, isDirty } = formState;
 

@@ -23,37 +23,39 @@ import Container from '../../Container';
 import Paper from '../../Paper';
 import UpdateStudentDialog from '../students/EditStudentDialog';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  wrapper: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    whiteSpace: 'pre-wrap',
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  lessonAvatar: {
-    color: theme.palette.secondary.contrastText,
-    backgroundColor: theme.palette.secondary.main,
-  },
-  wordChip: {
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    wrapper: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      whiteSpace: 'pre-wrap',
+    },
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    lessonAvatar: {
+      color: theme.palette.secondary.contrastText,
+      backgroundColor: theme.palette.secondary.main,
+    },
+    wordChip: {
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
+  }),
+);
 
 const LessonsList = () => {
   const { state } = useLocation<{ student: Student }>();
@@ -87,7 +89,7 @@ const LessonsList = () => {
       unsubStudent();
       unsubLessons();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
