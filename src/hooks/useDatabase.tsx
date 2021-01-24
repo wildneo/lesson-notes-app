@@ -139,7 +139,6 @@ const useDatabase = () => {
               newWords: wordsToArray(fields.newWords),
             }
           : fields;
-        console.log(modifyFields);
         await db
           .collection('teachers')
           .doc(auth.currentUser?.uid)
