@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
@@ -18,10 +18,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
 
+import useContextMenu from '../../../hooks/useContextMenu';
 import useDatabase, { Lesson, Student } from '../../../hooks/useDatabase';
 import Container from '../../Container';
 import Paper from '../../Paper';
-import UpdateStudentDialog from '../students/EditStudentDialog';
+import EditStudentDialog from '../students/EditStudentDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,29 +60,35 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const LessonsList = () => {
   const { state } = useLocation<{ student: Student }>();
+  const { openMenu } = useContextMenu<{ student: Student; lesson: Lesson }>();
   const [expanded, setExpanded] = React.useState<Lesson['id'] | null>(null);
   const [student, setStudent] = React.useState<Student>(state.student);
   const [lessons, setLessons] = React.useState<Lesson[]>([]);
   const classes = useStyles();
   const { subscribeOnStudent, subscribeOnLessons } = useDatabase();
-  const { id } = useParams<{ id: Student['id'] }>();
 
   const fullName = `${student.firstName} ${student.lastName}`;
 
-  const handleClickExpand = (lessionID: Lesson['id']) => () => {
-    if (lessionID === expanded) {
+  const handleClickMore = (lesson: Lesson) => (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    openMenu(event.currentTarget, { student, lesson });
+  };
+
+  const handleClickExpand = (lessonID: Lesson['id']) => () => {
+    if (lessonID === expanded) {
       setExpanded(null);
 
       return;
     }
-    setExpanded(lessionID);
+    setExpanded(lessonID);
   };
 
   React.useEffect(() => {
-    const unsubStudent = subscribeOnStudent(id, (s) => {
+    const unsubStudent = subscribeOnStudent(student.id, (s) => {
       setStudent(s);
     });
-    const unsubLessons = subscribeOnLessons(id, (l) => {
+    const unsubLessons = subscribeOnLessons(student.id, (l) => {
       setLessons(l);
     });
 
@@ -97,7 +104,7 @@ const LessonsList = () => {
       <Paper>
         <Toolbar>
           <Typography variant="h5">{fullName}</Typography>
-          <UpdateStudentDialog student={student} />
+          <EditStudentDialog student={student} />
         </Toolbar>
         <Divider />
         <List>
@@ -112,7 +119,7 @@ const LessonsList = () => {
                   </ListItemIcon>
                   <ListItemText primary={lesson.date.toLocaleString()} />
                   <ListItemIcon>
-                    <IconButton>
+                    <IconButton onClick={handleClickMore(lesson)}>
                       <MoreVertIcon />
                     </IconButton>
                     <IconButton

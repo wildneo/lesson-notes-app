@@ -13,16 +13,17 @@ import { RequestStatus } from '../../../typings';
 import { pickUpdatedFields } from '../../../utils';
 import StudentForm, { StudentFormProps } from '../../StudentForm';
 
-export interface UpdateStudentDialogProps {
+export interface EditStudentDialogProps {
   student: Student;
 }
 
-const UpdateStudentDialog = ({ student }: UpdateStudentDialogProps) => {
+const EditStudentDialog = ({ student }: EditStudentDialogProps) => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { updateStudent } = useDatabase();
+
   const defaultValues = {
     firstName: student.firstName,
     lastName: student.lastName,
@@ -44,16 +45,13 @@ const UpdateStudentDialog = ({ student }: UpdateStudentDialogProps) => {
   ) => {
     setRequestStatus('requested');
     try {
-      // console.log(values, dirtyFields);
       const updatedFields = pickUpdatedFields(values, dirtyFields);
       await updateStudent(student.id, updatedFields);
       setRequestStatus('finished');
-      setOpen(false);
     } catch (error) {
       setRequestStatus('failed');
-      // eslint-disable-next-line no-console
-      console.log(error);
     }
+    setOpen(false);
   };
 
   return (
@@ -82,4 +80,4 @@ const UpdateStudentDialog = ({ student }: UpdateStudentDialogProps) => {
   );
 };
 
-export default React.memo(UpdateStudentDialog);
+export default React.memo(EditStudentDialog);

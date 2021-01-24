@@ -91,7 +91,7 @@ const useDatabase = () => {
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Error adding document: ', error);
+      console.error('Error updating document: ', error);
     }
   };
 
@@ -123,6 +123,37 @@ const useDatabase = () => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error adding document: ', error);
+    }
+  };
+
+  const updateLesson = async (
+    studentId: string,
+    lessonId: string,
+    fields: Partial<LessonFormValues>,
+  ) => {
+    try {
+      if (auth.currentUser) {
+        const modifyFields = fields.newWords
+          ? {
+              ...fields,
+              newWords: wordsToArray(fields.newWords),
+            }
+          : fields;
+        console.log(modifyFields);
+        await db
+          .collection('teachers')
+          .doc(auth.currentUser?.uid)
+          .collection('students')
+          .doc(studentId)
+          .collection('lessons')
+          .doc(lessonId)
+          .update(modifyFields);
+      } else {
+        throw new Error('Auth error');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error updating document: ', error);
     }
   };
 
@@ -207,6 +238,7 @@ const useDatabase = () => {
     db,
     addLesson,
     addStudent,
+    updateLesson,
     updateStudent,
     subscribeOnStudent,
     subscribeOnLessons,

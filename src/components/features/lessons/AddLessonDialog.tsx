@@ -17,7 +17,7 @@ import { RequestStatus } from '../../../typings';
 import Fab from '../../Fab';
 import LessonForm from '../../LessonForm';
 
-const NewStudentDialog = () => {
+const AddLessonDialog = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -83,4 +83,4 @@ const NewStudentDialog = () => {
   );
 };
 
-export default React.memo(NewStudentDialog);
+export default React.memo(AddLessonDialog);
