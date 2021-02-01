@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { FormProvider, useForm, FormState } from 'react-hook-form';
 
@@ -18,9 +18,7 @@ export interface StudentFormProps {
   isLoading: boolean;
   defaultValues: StudentFormValues;
   onSubmit: (
-    // eslint-disable-next-line no-unused-vars
     values: StudentFormValues,
-    // eslint-disable-next-line no-unused-vars
     dirtyFields: FormState<StudentFormValues>['dirtyFields'],
   ) => void;
   onCancel: () => void;
@@ -39,17 +37,13 @@ const StudentForm = (props: StudentFormProps) => {
     defaultValues,
   });
 
-  const { formState, errors, handleSubmit, reset } = methods;
+  const { formState, errors, handleSubmit } = methods;
 
   const { dirtyFields, isSubmitSuccessful, isDirty } = formState;
 
-  const adapter = (values: StudentFormValues) => {
+  const submitAdapter = (values: StudentFormValues) => {
     onSubmit(values, dirtyFields);
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) reset();
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -94,14 +88,13 @@ const StudentForm = (props: StudentFormProps) => {
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit(adapter)}
+          onClick={handleSubmit(submitAdapter)}
           disabled={isSubmitSuccessful || !isDirty}
           color="primary"
         >
           Save
         </Button>
       </DialogActions>
-      {/* {JSON.stringify(formState.dirtyFields, null, 2)} */}
     </FormProvider>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import useTheme from '@material-ui/core/styles/useTheme';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import AddIcon from '@material-ui/icons/Add';
@@ -40,8 +41,6 @@ const NewStudentDialog = () => {
       setOpen(false);
     } catch (error) {
       setRequestStatus('failed');
-      // eslint-disable-next-line no-console
-      console.log(error);
     }
   };
 
@@ -58,6 +57,7 @@ const NewStudentDialog = () => {
         maxWidth="xs"
         open={open}
       >
+        <DialogTitle>Add new student</DialogTitle>
         <StudentForm
           defaultValues={defaultValues}
           isLoading={isLoading}

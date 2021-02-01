@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Toolbar from '@material-ui/core/Toolbar';
 
 import AppBar from './components/AppBar';
+import EditLessonDialog from './components/features/lessons/EditLessonDialog';
+import EditStudentDialog from './components/features/students/EditStudentDialog';
 import useAuth from './hooks/useAuth';
 import NoMatch from './pages/404';
 import Home from './pages/Home';
@@ -17,6 +19,10 @@ import Student from './pages/Student';
 const App = () => {
   const [ready, setReady] = React.useState(false);
   const { auth } = useAuth();
+  const location = useLocation<{
+    background: ReturnType<typeof useLocation>;
+  }>();
+  const background = location.state?.background;
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(() => {
@@ -32,7 +38,7 @@ const App = () => {
     <Box display="flex" flexDirection="column" height="inherit">
       <AppBar />
       <Toolbar />
-      <Switch>
+      <Switch location={background || location}>
         <ProtectedRoute exact path="/" redirectTo="/login" component={Home} />
         <ProtectedRoute
           exact
@@ -44,6 +50,12 @@ const App = () => {
         <Route path="/404" component={NoMatch} />
         <Redirect to="/404" />
       </Switch>
+      {background && (
+        <>
+          <Route path="/students/edit/:id" component={EditStudentDialog} />
+          <Route path="/lessons/edit/:id" component={EditLessonDialog} />
+        </>
+      )}
     </Box>
   ) : (
     <LinearProgress />

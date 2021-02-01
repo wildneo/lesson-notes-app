@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { FormProvider, useForm, FormState } from 'react-hook-form';
 
@@ -19,15 +19,13 @@ export interface LessonFormProps {
   isLoading: boolean;
   defaultValues: LessonFormValues;
   onSubmit: (
-    // eslint-disable-next-line no-unused-vars
     values: LessonFormValues,
-    // eslint-disable-next-line no-unused-vars
     dirtyFields: FormState<LessonFormValues>['dirtyFields'],
   ) => void;
   onCancel: () => void;
 }
 
-const StudentForm = (props: LessonFormProps) => {
+const LessonForm = (props: LessonFormProps) => {
   const {
     schema,
     defaultValues,
@@ -40,17 +38,13 @@ const StudentForm = (props: LessonFormProps) => {
     defaultValues,
   });
 
-  const { formState, errors, handleSubmit, reset } = methods;
+  const { formState, errors, handleSubmit } = methods;
 
   const { dirtyFields, isSubmitSuccessful, isDirty } = formState;
 
-  const adapter = (values: LessonFormValues) => {
+  const submitAdapter = (values: LessonFormValues) => {
     onSubmit(values, dirtyFields);
   };
-
-  useEffect(() => {
-    if (isSubmitSuccessful) reset();
-  }, [isSubmitSuccessful, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -146,7 +140,7 @@ const StudentForm = (props: LessonFormProps) => {
           Cancel
         </Button>
         <Button
-          onClick={handleSubmit(adapter)}
+          onClick={handleSubmit(submitAdapter)}
           disabled={isSubmitSuccessful || !isDirty}
           color="primary"
         >
@@ -157,4 +151,4 @@ const StudentForm = (props: LessonFormProps) => {
   );
 };
 
-export default React.memo(StudentForm);
+export default React.memo(LessonForm);

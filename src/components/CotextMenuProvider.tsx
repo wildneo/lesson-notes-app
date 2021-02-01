@@ -8,10 +8,9 @@ import {
 
 const CotextMenuProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const [anchorEl, setAnchorEl] = React.useState<AnchorEl>(null);
-  const [index, setIndex] = React.useState<number>(-1);
   const [state, setState] = React.useState<unknown>(null);
 
-  const openMenu: ContextMenuMethods['openMenu'] = (anchor, payload?) => {
+  const openMenu: ContextMenuMethods['openMenu'] = (anchor, payload) => {
     if (payload) {
       setState(payload);
     }
@@ -26,12 +25,10 @@ const CotextMenuProvider = ({ children }: React.PropsWithChildren<{}>) => {
   return (
     <MenuContext.Provider
       value={{
-        index,
         state,
         anchorEl,
         openMenu,
         closeMenu,
-        setIndex,
       }}
     >
       {children}
