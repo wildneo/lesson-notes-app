@@ -21,6 +21,7 @@ import clsx from 'clsx';
 
 import useContextMenu from '../../../hooks/useContextMenu';
 import useDatabase, { Lesson, Student } from '../../../hooks/useDatabase';
+import { getClassNameByDay } from '../../../utils';
 import Container from '../../Container';
 import Paper from '../../Paper';
 
@@ -37,7 +38,15 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'space-between',
     },
-    lessonAvatar: {
+    before: {
+      color: theme.palette.getContrastText(theme.palette.grey[300]),
+      backgroundColor: theme.palette.grey[300],
+    },
+    today: {
+      color: theme.palette.getContrastText(theme.palette.success.main),
+      backgroundColor: theme.palette.success.main,
+    },
+    after: {
       color: theme.palette.secondary.contrastText,
       backgroundColor: theme.palette.secondary.main,
     },
@@ -126,7 +135,7 @@ const LessonsList = () => {
               <div className={classes.wrapper}>
                 <div className={classes.header}>
                   <ListItemIcon>
-                    <Avatar className={classes.lessonAvatar}>
+                    <Avatar className={classes[getClassNameByDay(lesson.date)]}>
                       {lesson.lessonNumber}
                     </Avatar>
                   </ListItemIcon>
