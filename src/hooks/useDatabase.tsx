@@ -156,6 +156,30 @@ const useDatabase = () => {
     }
   };
 
+  const getStudentsOnce = () =>
+    db
+      .collection('teachers')
+      .doc(auth.currentUser?.uid)
+      .collection('students')
+      .where('isActive', '==', true)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then((snapshot) => {
+        const students = snapshot.docs.map((doc) => {
+          const data = doc.data() as StudentDoc;
+          const student: Student = {
+            id: doc.id,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            isActive: data.isActive,
+            createdAt: data.createdAt.toDate(),
+          };
+
+          return student;
+        });
+        return students;
+      });
+
   const subscribeOnStudent = (
     id: string,
     cb: onChangeCallback<Student>,
@@ -239,6 +263,7 @@ const useDatabase = () => {
     addStudent,
     updateLesson,
     updateStudent,
+    getStudentsOnce,
     subscribeOnStudent,
     subscribeOnLessons,
     subscribeOnStudents,

@@ -15,14 +15,18 @@ import useDatabase, { Student } from '../../../hooks/useDatabase';
 import Container from '../../Container';
 import Paper from '../../Paper';
 
+export interface StudentsListProps {
+  defaultStudents: Student[];
+}
+
 const getFullName = (student: Student) =>
   `${student.firstName} ${student.lastName}`;
 
 const getInitials = (student: Student) =>
   `${student.firstName[0]}${student.lastName[0]}`;
 
-const StudentsList = () => {
-  const [students, setStudents] = React.useState<Student[]>([]);
+const StudentsList = ({ defaultStudents }: StudentsListProps) => {
+  const [students, setStudents] = React.useState<Student[]>(defaultStudents);
   const { subscribeOnStudents } = useDatabase();
   const history = useHistory();
 

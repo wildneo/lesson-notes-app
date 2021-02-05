@@ -1,11 +1,13 @@
 import React from 'react';
 
 import AddStudentDialog from '../components/features/students/AddStudentDialog';
-import StudentsList from '../components/features/students/StudentsList';
+import StudentsList, {
+  StudentsListProps,
+} from '../components/features/students/StudentsList';
 
-const Home = () => (
+const Home = ({ defaultStudents }: StudentsListProps) => (
   <>
-    <StudentsList />
+    <StudentsList defaultStudents={defaultStudents} />
     <AddStudentDialog />
   </>
 );
