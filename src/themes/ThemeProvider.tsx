@@ -15,9 +15,10 @@ import defaultTheme from './theme';
 const ThemeProvider = ({ children }: React.PropsWithChildren<{}>) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [cookies, setCookie] = useCookies(['darkMode']);
-  const [darkMode, setDarkMode] = React.useState<boolean>(
-    JSON.parse(cookies.darkMode) ?? prefersDarkMode,
-  );
+  const defaultDarkMode = cookies.darkMode
+    ? JSON.parse(cookies.darkMode)
+    : prefersDarkMode;
+  const [darkMode, setDarkMode] = React.useState<boolean>(defaultDarkMode);
   const theme = React.useMemo(() => createMuiTheme(defaultTheme(darkMode)), [
     darkMode,
   ]);
