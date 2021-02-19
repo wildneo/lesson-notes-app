@@ -13,8 +13,11 @@ import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { AccountCircle } from '@material-ui/icons';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 import useAuth from '../hooks/useAuth';
+import useThemeProvider from '../hooks/useThemeProvider';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,6 +48,7 @@ const AppBar = () => {
   const [login, setlogin] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
+  const { darkMode, setDarkMode } = useThemeProvider();
   const match = useRouteMatch(['/login', '/']);
   const history = useHistory();
   const classes = useStyles();
@@ -69,6 +73,10 @@ const AppBar = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleChangeThemeMode = () => {
+    setDarkMode(!darkMode);
   };
 
   React.useEffect(() => {
@@ -101,6 +109,9 @@ const AppBar = () => {
           <Typography variant="h6" className={classes.title}>
             Lesson notes
           </Typography>
+          <IconButton onClick={handleChangeThemeMode} color="inherit">
+            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           {login && (
             <div>
               <IconButton onClick={handleOpen} color="inherit">
