@@ -186,7 +186,7 @@ const LessonsList = () => {
                         </Typography>
                       </>
                     )}
-                    {lesson.newWords && (
+                    {lesson.newWords.length > 0 && (
                       <>
                         <Typography variant="subtitle1" gutterBottom>
                           New words
