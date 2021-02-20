@@ -17,6 +17,8 @@
     "clsx": "^1.1.1",
     "date-fns": "^2.17.0",
     "firebase": "^8.2.3",
+    "i18next": "^19.8.9",
+    "i18next-http-backend": "^1.1.0",
     "lodash": "^4.17.20",
     "lodash.pick": "^4.4.0",
     "lodash.uniq": "^4.5.0",
@@ -24,6 +26,7 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.14.1",
+    "react-i18next": "^11.8.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "web-vitals": "^0.2.4",
@@ -36,7 +39,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint ./src --ext .ts,.tsx",
     "lint:fix": "eslint ./src --ext .ts,.tsx --quiet --fix",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy",
+    "i18n:parse": "npx i18next"
   },
   "eslintConfig": {
     "extends": [
@@ -70,6 +74,7 @@
     "eslint-config-airbnb-typescript-prettier": "^4.1.0",
     "eslint-import-resolver-typescript": "^2.3.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "i18next-parser": "^3.6.0",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   }
