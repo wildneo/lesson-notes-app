@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -19,6 +20,7 @@ export interface EditStudentDialogProps {
 
 const EditStudentDialog = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
+  const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { updateStudent } = useDatabase();
@@ -60,7 +62,7 @@ const EditStudentDialog = () => {
       maxWidth="xs"
       open
     >
-      <DialogTitle>Edit student</DialogTitle>
+      <DialogTitle>{t('editStudentDialog.title')}</DialogTitle>
       <StudentForm
         defaultValues={defaultValues}
         isLoading={isLoading}

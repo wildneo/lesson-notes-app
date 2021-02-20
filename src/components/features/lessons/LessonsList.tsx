@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { makeStyles, createStyles, Theme } from '@material-ui/core';
@@ -68,12 +69,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const LessonsList = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation<{ student: Student }>();
-  const { openMenu } = useContextMenu<{ student: Student; lesson: Lesson }>();
   const [expanded, setExpanded] = React.useState<Lesson['id'] | null>(null);
   const [student, setStudent] = React.useState<Student>(location.state.student);
   const [lessons, setLessons] = React.useState<Lesson[]>([]);
+  const { openMenu } = useContextMenu<{ student: Student; lesson: Lesson }>();
   const classes = useStyles();
   const { subscribeOnStudent, subscribeOnLessons } = useDatabase();
 
@@ -169,7 +171,7 @@ const LessonsList = () => {
                     {lesson.homework && (
                       <>
                         <Typography variant="subtitle1" gutterBottom>
-                          Homework
+                          {t('lessonsList.subtitles.homework')}
                         </Typography>
                         <Typography variant="body2" paragraph>
                           {lesson.homework}
@@ -179,7 +181,7 @@ const LessonsList = () => {
                     {lesson.comment && (
                       <>
                         <Typography variant="subtitle1" gutterBottom>
-                          Comment
+                          {t('lessonsList.subtitles.comment')}
                         </Typography>
                         <Typography variant="body2" paragraph>
                           {lesson.comment}
@@ -189,7 +191,7 @@ const LessonsList = () => {
                     {lesson.newWords.length > 0 && (
                       <>
                         <Typography variant="subtitle1" gutterBottom>
-                          New words
+                          {t('lessonsList.subtitles.newWords')}
                         </Typography>
                         {lesson.newWords.map((word) => (
                           <Chip

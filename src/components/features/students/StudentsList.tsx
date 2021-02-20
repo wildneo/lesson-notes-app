@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { generatePath, useHistory } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -27,6 +28,7 @@ const getInitials = (student: Student) =>
 
 const StudentsList = ({ defaultStudents }: StudentsListProps) => {
   const [students, setStudents] = React.useState<Student[]>(defaultStudents);
+  const { t } = useTranslation();
   const { subscribeOnStudents } = useDatabase();
   const history = useHistory();
 
@@ -46,7 +48,7 @@ const StudentsList = ({ defaultStudents }: StudentsListProps) => {
     <Container>
       <Paper>
         <Toolbar>
-          <Typography variant="h5">Students list</Typography>
+          <Typography variant="h5">{t('studentsList.title')}</Typography>
         </Toolbar>
         <Divider />
         <List>

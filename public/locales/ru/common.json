@@ -1,0 +1,71 @@
+{
+  "appBar": {
+    "title": "Lesson notes",
+    "userMenu": {
+      "actions": {
+        "signout": "$t(actions:signout)"
+      }
+    }
+  },
+  "editLessonDialog": {
+    "title": "Редактировать урок"
+  },
+  "editStudentDialog": {
+    "title": "Редактировать студента"
+  },
+  "lessonForm": {
+    "actions": {
+      "cancel": "$t(actions:cancel)",
+      "save": "$t(actions:save)"
+    },
+    "labels": {
+      "comment": "Комментарий",
+      "date": "Дата",
+      "homework": "Домашняя работа",
+      "lessonNumber": "№ Урока",
+      "lessonPlan": "План урока",
+      "newWords": "Новые слова"
+    }
+  },
+  "lessonsList": {
+    "lessonContextMenu": {
+      "actions": {
+        "edit": "$t(actions:edit)"
+      }
+    },
+    "subtitles": {
+      "comment": "Комментарий",
+      "homework": "Домашняя работа",
+      "newWords": "Новые слова"
+    }
+  },
+  "loginForm": {
+    "actions": {
+      "signin": "$t(actions:signin)"
+    },
+    "labels": {
+      "email": "E-mail",
+      "password": "Пароль"
+    },
+    "title": "Вход"
+  },
+  "newLessonDialog": {
+    "title": "Добавить урок"
+  },
+  "newStudentDialog": {
+    "title": "Добавить студента"
+  },
+  "studentForm": {
+    "actions": {
+      "cancel": "$t(actions:cancel)",
+      "save": "$t(actions:save)"
+    },
+    "labels": {
+      "firstName": "Имя",
+      "lastName": "Фамилия"
+    }
+  },
+  "studentsList": {
+    "title": "Список студентов"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "required": "Required field",
+  "wrongFormat": "Wrong format",
+  "wrongValue": "Wrong value"
+}

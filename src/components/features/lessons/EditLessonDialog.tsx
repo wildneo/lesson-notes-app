@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -19,6 +20,7 @@ import LessonForm, { LessonFormProps } from '../../LessonForm';
 
 const EditLessonDialog = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
+  const { t } = useTranslation();
   const history = useHistory();
   const { state } = useLocation<{
     student: Student;
@@ -67,7 +69,7 @@ const EditLessonDialog = () => {
       maxWidth="xs"
       open
     >
-      <DialogTitle>Edit lesson</DialogTitle>
+      <DialogTitle>{t('editLessonDialog.title')}</DialogTitle>
       <LessonForm
         defaultValues={defaultValues}
         isLoading={isLoading}

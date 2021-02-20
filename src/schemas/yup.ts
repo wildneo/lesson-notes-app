@@ -1,14 +1,16 @@
 import * as yup from 'yup';
 
+import i18n from '../i18n';
+
 export type { AnyObjectSchema } from 'yup';
 
 yup.setLocale({
   mixed: {
-    notType: () => 'Wrong Format',
-    required: () => 'Required Field',
+    notType: () => i18n.t('validations:wrongFormat'),
+    required: () => i18n.t('validations:required'),
   },
   string: {
-    matches: () => 'Wrong Value',
+    matches: () => i18n.t('validations:wrongValue'),
   },
 });
 

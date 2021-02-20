@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const LoginForm = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
+  const { t } = useTranslation();
   const history = useHistory();
   const { auth } = useAuth();
   const classes = useStyles();
@@ -101,7 +103,7 @@ const LoginForm = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {t('loginForm.title', t('actions:signin'))}
           </Typography>
           {isLoading && <LinearProgress />}
           <Grid
@@ -114,7 +116,7 @@ const LoginForm = () => {
             <Grid item xs={12}>
               <TextField
                 name="email"
-                label="E-mail"
+                label={t('loginForm.labels.email')}
                 variant="outlined"
                 error={Boolean(errors.email)}
                 helperText={errors.email?.message ?? ' '}
@@ -126,7 +128,7 @@ const LoginForm = () => {
             <Grid item xs={12}>
               <TextField
                 name="password"
-                label="Password"
+                label={t('loginForm.labels.password')}
                 variant="outlined"
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message ?? ' '}
@@ -142,7 +144,7 @@ const LoginForm = () => {
                 color="primary"
                 fullWidth
               >
-                Sign In
+                {t('loginForm.actions.signin')}
               </Button>
             </Grid>
           </Grid>

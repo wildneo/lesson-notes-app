@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useTheme from '@material-ui/core/styles/useTheme';
@@ -13,6 +15,7 @@ import Fab from '../../Fab';
 import StudentForm from '../../StudentForm';
 
 const NewStudentDialog = () => {
+  const { t } = useTranslation();
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
   const [open, setOpen] = useState(false);
   const theme = useTheme();
@@ -57,7 +60,7 @@ const NewStudentDialog = () => {
         maxWidth="xs"
         open={open}
       >
-        <DialogTitle>Add new student</DialogTitle>
+        <DialogTitle>{t('newStudentDialog.title')}</DialogTitle>
         <StudentForm
           defaultValues={defaultValues}
           isLoading={isLoading}

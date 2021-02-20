@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FormProvider, useForm, FormState } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@material-ui/core/Button';
@@ -26,6 +27,7 @@ export interface LessonFormProps {
 }
 
 const LessonForm = (props: LessonFormProps) => {
+  const { t } = useTranslation();
   const {
     schema,
     defaultValues,
@@ -60,7 +62,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={8}>
             <DatePicker
               name="date"
-              label="Date"
+              label={t('lessonForm.labels.date')}
               variant="outlined"
               pickerVariant="inline"
               error={Boolean(errors.date)}
@@ -72,7 +74,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={4}>
             <TextField
               name="lessonNumber"
-              label="Lesson"
+              label={t('lessonForm.labels.lessonNumber')}
               variant="outlined"
               error={Boolean(errors.lessonNumber)}
               helperText={errors.lessonNumber?.message ?? ' '}
@@ -83,7 +85,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="lessonPlan"
-              label="Lesson Plan"
+              label={t('lessonForm.labels.lessonPlan')}
               variant="outlined"
               multiline
               rowsMax={4}
@@ -96,7 +98,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="homework"
-              label="Homework"
+              label={t('lessonForm.labels.homework')}
               variant="outlined"
               multiline
               rowsMax={6}
@@ -108,7 +110,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="comment"
-              label="Comment"
+              label={t('lessonForm.labels.comment')}
               variant="outlined"
               multiline
               rowsMax={6}
@@ -120,7 +122,7 @@ const LessonForm = (props: LessonFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="newWords"
-              label="New words"
+              label={t('lessonForm.labels.newWords')}
               variant="outlined"
               multiline
               rowsMax={2}
@@ -137,14 +139,14 @@ const LessonForm = (props: LessonFormProps) => {
           disabled={isSubmitSuccessful}
           color="secondary"
         >
-          Cancel
+          {t('lessonForm.actions.cancel')}
         </Button>
         <Button
           onClick={handleSubmit(submitAdapter)}
           disabled={isSubmitSuccessful || !isDirty}
           color="primary"
         >
-          Save
+          {t('lessonForm.actions.save')}
         </Button>
       </DialogActions>
     </FormProvider>

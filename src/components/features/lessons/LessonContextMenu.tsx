@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Menu from '@material-ui/core/Menu';
@@ -19,6 +20,7 @@ const LessonContextMenu = () => {
     anchorEl,
     closeMenu,
   } = useContextMenu<LessonContextMenuState>();
+  const { t } = useTranslation();
   const location = useLocation();
   const history = useHistory();
 
@@ -44,9 +46,10 @@ const LessonContextMenu = () => {
       open={Boolean(anchorEl)}
       keepMounted
     >
-      <MenuItem onClick={handleEdit}>Edit</MenuItem>
+      <MenuItem onClick={handleEdit}>
+        {t('lessonsList.lessonContextMenu.actions.edit')}
+      </MenuItem>
       {/* TODO: delete lessons */}
-      {/* <MenuItem onClick={() => null}>Delete</MenuItem> */}
     </Menu>
   );
 };

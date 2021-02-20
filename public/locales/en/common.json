@@ -1,0 +1,71 @@
+{
+  "appBar": {
+    "title": "Lesson notes",
+    "userMenu": {
+      "actions": {
+        "signout": "$t(actions:signout)"
+      }
+    }
+  },
+  "editLessonDialog": {
+    "title": "Edit lesson"
+  },
+  "editStudentDialog": {
+    "title": "Edit student"
+  },
+  "lessonForm": {
+    "actions": {
+      "cancel": "$t(actions:cancel)",
+      "save": "$t(actions:save)"
+    },
+    "labels": {
+      "comment": "Comment",
+      "date": "Date",
+      "homework": "Homework",
+      "lessonNumber": "Lesson",
+      "lessonPlan": "Lesson plan",
+      "newWords": "New words"
+    }
+  },
+  "lessonsList": {
+    "lessonContextMenu": {
+      "actions": {
+        "edit": "$t(actions:edit)"
+      }
+    },
+    "subtitles": {
+      "comment": "Comment",
+      "homework": "Homework",
+      "newWords": "New words"
+    }
+  },
+  "loginForm": {
+    "actions": {
+      "signin": "$t(actions:signin)"
+    },
+    "labels": {
+      "email": "E-mail",
+      "password": "Password"
+    },
+    "title": "Sign In"
+  },
+  "newLessonDialog": {
+    "title": "Add new lesson"
+  },
+  "newStudentDialog": {
+    "title": "Add new student"
+  },
+  "studentForm": {
+    "actions": {
+      "cancel": "$t(actions:cancel)",
+      "save": "$t(actions:save)"
+    },
+    "labels": {
+      "firstName": "First name",
+      "lastName": "Last name"
+    }
+  },
+  "studentsList": {
+    "title": "Students list"
+  }
+}

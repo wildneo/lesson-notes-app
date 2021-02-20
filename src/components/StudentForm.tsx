@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FormProvider, useForm, FormState } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import Button from '@material-ui/core/Button';
@@ -25,6 +26,7 @@ export interface StudentFormProps {
 }
 
 const StudentForm = (props: StudentFormProps) => {
+  const { t } = useTranslation();
   const {
     schema,
     defaultValues,
@@ -59,7 +61,7 @@ const StudentForm = (props: StudentFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="firstName"
-              label="First name"
+              label={t('studentForm.labels.firstName')}
               variant="outlined"
               error={Boolean(errors.firstName)}
               helperText={errors.firstName?.message ?? ' '}
@@ -70,7 +72,7 @@ const StudentForm = (props: StudentFormProps) => {
           <Grid item xs={12}>
             <TextField
               name="lastName"
-              label="Last name"
+              label={t('studentForm.labels.lastName')}
               variant="outlined"
               error={Boolean(errors.lastName)}
               helperText={errors.lastName?.message ?? ' '}
@@ -85,14 +87,14 @@ const StudentForm = (props: StudentFormProps) => {
           disabled={isSubmitSuccessful}
           color="secondary"
         >
-          Cancel
+          {t('studentForm.actions.cancel')}
         </Button>
         <Button
           onClick={handleSubmit(submitAdapter)}
           disabled={isSubmitSuccessful || !isDirty}
           color="primary"
         >
-          Save
+          {t('studentForm.actions.save')}
         </Button>
       </DialogActions>
     </FormProvider>

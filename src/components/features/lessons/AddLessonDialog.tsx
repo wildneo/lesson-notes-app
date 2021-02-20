@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -20,6 +21,7 @@ import LessonForm from '../../LessonForm';
 const AddLessonDialog = () => {
   const [requestStatus, setRequestStatus] = useState<RequestStatus>('none');
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { addLesson } = useDatabase();
@@ -70,7 +72,7 @@ const AddLessonDialog = () => {
         maxWidth="xs"
         open={open}
       >
-        <DialogTitle>Add new lesson</DialogTitle>
+        <DialogTitle>{t('newLessonDialog.title')}</DialogTitle>
         <LessonForm
           defaultValues={defaultValues}
           isLoading={isLoading}
