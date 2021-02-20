@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 import Box from '@material-ui/core/Box';
@@ -18,23 +20,36 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import Student from './pages/Student';
 
 const App = () => {
-  const [ready, setReady] = React.useState(false);
+  const [authReady, setAuthReady] = React.useState(false);
   const [defaultStudents, setStudents] = React.useState<IStudent[]>([]);
+  const [cookies, setCookie] = useCookies(['locale']);
+  const { i18n, ready: i18nReady } = useTranslation();
   const { auth } = useAuth();
   const { getStudentsOnce } = useDatabase();
   const location = useLocation<{
     background: ReturnType<typeof useLocation>;
   }>();
   const background = location.state?.background;
+  const isReady = i18nReady && authReady;
+
+  React.useEffect(() => {
+    if (cookies.locale) {
+      i18n.changeLanguage(cookies.locale);
+    }
+    i18n.on('languageChanged', (lng) => {
+      setCookie('locale', lng);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const students = await getStudentsOnce();
-        await setStudents(students);
-        setReady(true);
+        setStudents(students);
+        setAuthReady(true);
       } else {
-        setReady(true);
+        setAuthReady(true);
       }
     });
 
@@ -42,7 +57,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return ready ? (
+  return isReady ? (
     <Box display="flex" flexDirection="column" height="inherit">
       <AppBar />
       <Toolbar />

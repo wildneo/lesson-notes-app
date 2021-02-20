@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTranslation } from 'react-i18next';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import MUIAppBar from '@material-ui/core/AppBar';
@@ -11,13 +12,19 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import { AccountCircle } from '@material-ui/icons';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
+import LanguageIcon from '@material-ui/icons/Language';
 
 import useAuth from '../hooks/useAuth';
 import useThemeProvider from '../hooks/useThemeProvider';
+import { Nullable } from '../typings';
+
+interface HideOnScrollProps {
+  children?: React.ReactElement;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,10 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
-interface HideOnScrollProps {
-  children?: React.ReactElement;
-}
 
 const HideOnScroll = ({ children }: HideOnScrollProps) => {
   const trigger = useScrollTrigger();
@@ -46,8 +49,9 @@ const HideOnScroll = ({ children }: HideOnScrollProps) => {
 
 const AppBar = () => {
   const [login, setlogin] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-
+  const [userBtnEl, setUserBtnEl] = React.useState<Nullable<HTMLElement>>(null);
+  const [lngBtnEl, setLngBtnEl] = React.useState<Nullable<HTMLElement>>(null);
+  const { i18n, t } = useTranslation();
   const { darkMode, setDarkMode } = useThemeProvider();
   const match = useRouteMatch(['/login', '/']);
   const history = useHistory();
@@ -56,23 +60,36 @@ const AppBar = () => {
 
   const showBackButton = match && !match.isExact;
 
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setUserBtnEl(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setUserBtnEl(null);
+  };
+
+  const handleOpenLngMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setLngBtnEl(event.currentTarget);
+  };
+
+  const handleCloseLngMenu = () => {
+    setLngBtnEl(null);
+  };
+
+  const handleChangeLanguage = (lng: string) => () => {
+    handleCloseLngMenu();
+    i18n.changeLanguage(lng);
+  };
+
   const handleSignOut = () => {
     auth.signOut().then(() => {
-      setAnchorEl(null);
+      handleCloseUserMenu();
       history.push('/login');
     });
   };
 
   const handleBackClick = () => {
     history.goBack();
-  };
-
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const handleChangeThemeMode = () => {
@@ -107,18 +124,51 @@ const AppBar = () => {
             </IconButton>
           )}
           <Typography variant="h6" className={classes.title}>
-            Lesson notes
+            {/* Lesson notes */}
+            {t('appBar.title')}
           </Typography>
           <IconButton onClick={handleChangeThemeMode} color="inherit">
             {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
+          <>
+            <IconButton onClick={handleOpenLngMenu} color="inherit">
+              <LanguageIcon />
+            </IconButton>
+            <Menu
+              anchorEl={lngBtnEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(lngBtnEl)}
+              onClose={handleCloseLngMenu}
+            >
+              <MenuItem
+                selected={i18n.language === 'en'}
+                onClick={handleChangeLanguage('en')}
+              >
+                English
+              </MenuItem>
+              <MenuItem
+                selected={i18n.language === 'ru'}
+                onClick={handleChangeLanguage('ru')}
+              >
+                Русский
+              </MenuItem>
+            </Menu>
+          </>
           {login && (
-            <div>
-              <IconButton onClick={handleOpen} color="inherit">
-                <AccountCircle />
+            <>
+              <IconButton onClick={handleOpenUserMenu} color="inherit">
+                <AccountCircleIcon />
               </IconButton>
               <Menu
-                anchorEl={anchorEl}
+                anchorEl={userBtnEl}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
@@ -128,12 +178,14 @@ const AppBar = () => {
                   vertical: 'top',
                   horizontal: 'right',
                 }}
-                open={!!anchorEl}
-                onClose={handleClose}
+                open={Boolean(userBtnEl)}
+                onClose={handleCloseUserMenu}
               >
-                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                <MenuItem onClick={handleSignOut}>
+                  {t('appBar.userMenu.actions.signout')}
+                </MenuItem>
               </Menu>
-            </div>
+            </>
           )}
         </Toolbar>
       </MUIAppBar>
